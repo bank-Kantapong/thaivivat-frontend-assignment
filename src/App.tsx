@@ -7,7 +7,6 @@ import {
   CommentOutlined,
   HeartOutlined,
   PlusSquareOutlined,
-  AntDesignOutlined,
   MenuOutlined,
 } from "@ant-design/icons";
 import { useMemo } from "react";
@@ -17,7 +16,9 @@ import Posts from "./components/Posts";
 import MyProfile from "./components/MyProfile";
 import Suggest from "./components/Suggest";
 import FooterInfo from "./components/FooterInfo";
-import Instagram_logo from "./assets/Instagram_logo.png";
+import Instagram_text_logo from "./assets/Instagram_text_logo.png";
+import Instagram_logo from "./assets/Instagram_logo.webp";
+import thread_logo from "./assets/thread_logo.png";
 
 const { Sider, Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
@@ -66,7 +67,7 @@ const FooterMenuItems: MenuItem[] = [
   {
     key: "thread",
     label: "Thread",
-    icon: <AntDesignOutlined />,
+    icon: <img src={thread_logo} alt="thread" width={22} height={22} />,
   },
   {
     key: "more",
@@ -77,6 +78,10 @@ const FooterMenuItems: MenuItem[] = [
 
 function App() {
   const screens = useBreakpoint();
+
+  const isHideNavMenu = useMemo(() => {
+    return !screens.xl;
+  }, [screens.xl]);
 
   const isHideRightContent = useMemo(() => {
     return !screens.lg;
@@ -99,10 +104,10 @@ function App() {
               <div style={{ padding: "25px 12px 0px", marginBottom: "19px" }}>
                 <img
                   alt="logo"
-                  src={Instagram_logo}
-                  width={103}
-                  height={40}
-                  style={{ filter: "invert(1)" }}
+                  src={isHideNavMenu ? Instagram_logo : Instagram_text_logo}
+                  width={isHideNavMenu ? 22 : 103}
+                  height={isHideNavMenu ? 22 : 40}
+                  style={{ filter: isHideNavMenu ? "none" : "invert(1)" }}
                 />
               </div>
               <MenuStyle

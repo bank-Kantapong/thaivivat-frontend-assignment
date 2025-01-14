@@ -1,16 +1,10 @@
 import { Flex, Typography } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { useGetCharacterQuery } from "../api/apiSlice";
+import { StoriesItemType, useGetCharacterQuery } from "../api/apiSlice";
 import { useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 
 const { Text } = Typography;
-
-interface StoriesItemProps {
-  id: string;
-  name: string;
-  imageUrl: string;
-}
 
 const Stories = () => {
   const [showPrev, setShowPrev] = useState(false);
@@ -64,12 +58,12 @@ const Stories = () => {
         ref={scrollRef}
         onScroll={handleScroll}
       >
-        {characterList?.map((item: StoriesItemProps) => (
+        {characterList?.map((item: StoriesItemType) => (
           <Flex
             gap={4}
             align="center"
             vertical
-            key={item.id}
+            key={item._id}
             style={{ height: "max-content", maxWidth: 66 }}
           >
             <StoryBorder>
