@@ -7,6 +7,8 @@ import {
   CommentOutlined,
   HeartOutlined,
   PlusSquareOutlined,
+  AntDesignOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 import { useMemo } from "react";
 import styled from "styled-components";
@@ -15,6 +17,7 @@ import Posts from "./components/Posts";
 import MyProfile from "./components/MyProfile";
 import Suggest from "./components/Suggest";
 import FooterInfo from "./components/FooterInfo";
+import Instagram_logo from "./assets/Instagram_logo.png";
 
 const { Sider, Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
@@ -55,8 +58,21 @@ const items: MenuItem[] = [
   {
     key: "create",
     label: "Create",
-    icon: <PlusSquareOutlined />
-  }
+    icon: <PlusSquareOutlined />,
+  },
+];
+
+const FooterMenuItems: MenuItem[] = [
+  {
+    key: "thread",
+    label: "Thread",
+    icon: <AntDesignOutlined />,
+  },
+  {
+    key: "more",
+    label: "More",
+    icon: <MenuOutlined />,
+  },
 ];
 
 function App() {
@@ -70,7 +86,6 @@ function App() {
     return !screens.md;
   }, [screens.md]);
 
-  console.log("isAppSize", isAppSize);
   return (
     <LayoutStyle>
       {!isAppSize && (
@@ -79,12 +94,28 @@ function App() {
           collapsedWidth="0"
           zeroWidthTriggerStyle={{ display: "none" }}
         >
-          <MenuStyle
-            mode="inline"
-            defaultSelectedKeys={["4"]}
-            items={items}
-            style={{ height: "100%" }}
-          />
+          <Flex justify="space-between" vertical style={{ height: "100%" }}>
+            <Flex vertical>
+              <div style={{ padding: "25px 12px 0px", marginBottom: "19px" }}>
+                <img
+                  alt="logo"
+                  src={Instagram_logo}
+                  width={103}
+                  height={40}
+                  style={{ filter: "invert(1)" }}
+                />
+              </div>
+              <MenuStyle
+                mode="inline"
+                defaultSelectedKeys={["home"]}
+                items={items}
+                style={{ height: "100%" }}
+              />
+            </Flex>
+            <div>
+              <MenuStyle mode="inline" items={FooterMenuItems} />
+            </div>
+          </Flex>
         </SiderStyle>
       )}
       <Layout>
@@ -95,7 +126,7 @@ function App() {
               span={isHideRightContent ? 24 : 16}
               style={{ maxWidth: 630, width: "100%" }}
             >
-              <Flex vertical style={{ marginTop: "16px", height: "100%" }}>
+              <Flex vertical style={{ height: "100%" }}>
                 <Stories />
                 <Posts />
               </Flex>
@@ -128,6 +159,9 @@ const LayoutStyle = styled(Layout)`
 `;
 
 const SiderStyle = styled(Sider)`
+  background: black;
+  padding: 8px 12px 20px;
+  border-right: 1px solid var(--ig-separator);
   &.ant-layout-sider.ant-layout-sider-dark {
     flex: 0 0 244px !important;
     max-width: 244px !important;
@@ -144,9 +178,32 @@ const SiderStyle = styled(Sider)`
 
 const MenuStyle = styled(Menu)`
   height: 100%;
-  border-right: 1px solid var(--ig-separator) !important;
   background-color: var(--ig-primary-background) !important;
   color: white;
+  li.ant-menu-item {
+    padding: 12px !important;
+    height: 56px;
+    margin: 4px 0px;
+  }
+  .ant-menu-item:hover {
+    background-color: var(--ig-hover-overlay) !important;
+  }
+  .ant-menu-item.ant-menu-item-selected {
+    background-color: var(--primary-background) !important;
+  }
+  .ant-menu-item.ant-menu-item-selected > .ant-menu-title-content {
+    font-weight: 700;
+  }
+  .ant-menu-title-content {
+    color: white;
+    font-size: var(--system-16-font-size);
+    font-weight: 400;
+    margin-inline-start: 16px !important;
+  }
+  span.anticon.ant-menu-item-icon {
+    color: white;
+    font-size: 22px;
+  }
 `;
 
 const RowStyle = styled(Row)`

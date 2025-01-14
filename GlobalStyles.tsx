@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
     --ig-primary-button: rgb(0, 149, 246);
     --ig-tertiary-text: rgb(115, 115, 115);
     --ig-separator: rgb(38, 38, 38);
+    --ig-hover-overlay: rgba(255, 255, 255, .1);
   }
 `;
 
