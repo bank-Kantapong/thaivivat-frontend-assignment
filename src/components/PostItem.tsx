@@ -1,4 +1,4 @@
-import { Divider, Flex, Input, Typography } from "antd";
+import { Divider, Input } from "antd";
 import {
   EllipsisOutlined,
   HeartOutlined,
@@ -10,8 +10,9 @@ import {
 import MiniProfile from "./MiniProfile";
 import useResponsive from "../hooks/useResponsive";
 import styled from "styled-components";
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
-const { Text } = Typography;
 const { TextArea } = Input;
 
 type PostItemType = {
@@ -46,13 +47,11 @@ const PostItem = ({
   const { isFitAppSize } = useResponsive();
 
   return (
-    <Flex vertical>
-      <Flex vertical>
+    <FlexBox vertical>
+      <FlexBox vertical>
         <div style={{ padding: isFitAppSize ? "12px 14px 0" : "0" }}>
           <MiniProfile
-            style={{
-              padding: "0 0 12px 4px",
-            }}
+            padding="0 0 12px 4px"
             imageUrl={imageUrl}
             name={name}
             activeTime={isFitAppSize ? "" : "16m"}
@@ -81,13 +80,13 @@ const PostItem = ({
           />
           <HeartIcon className={likeId && likeId === _id ? "show" : ""} />
         </ImageContainer>
-        <Flex vertical style={{ padding: isFitAppSize ? "16px 16px 0" : "0" }}>
-          <Flex
+        <FlexBox vertical padding={isFitAppSize ? "16px 16px 0" : "0"}>
+          <FlexBox
             align="center"
             justify="space-between"
-            style={{ padding: isFitAppSize ? "0 0 12px" : "12px 0" }}
+            padding={isFitAppSize ? "0 0 12px" : "12px 0"}
           >
-            <Flex gap="middle">
+            <FlexBox gap="middle">
               {isLike ? (
                 <HeartFilled
                   style={{
@@ -124,7 +123,7 @@ const PostItem = ({
                   paddingBottom: "8px",
                 }}
               />
-            </Flex>
+            </FlexBox>
             <BookOutlined
               style={{
                 fontSize: 24,
@@ -132,18 +131,14 @@ const PostItem = ({
                 cursor: "pointer",
               }}
             />
-          </Flex>
-          <Text style={{ color: "white" }} strong>
-            10 likes
-          </Text>
-          <Flex gap="small">
-            <Text style={{ color: "white" }} strong>
-              {name}
-            </Text>
-            <Text style={{ color: "white" }}>Hello</Text>
-          </Flex>
+          </FlexBox>
+          <TextTypo strong text="10 likes" />
+          <FlexBox gap="small">
+            <TextTypo strong text={name} />
+            <TextTypo text="Hello" />
+          </FlexBox>
           {canComment && (
-            <Flex align="center">
+            <FlexBox align="center">
               <CommentInput
                 placeholder="Add a comment..."
                 autoSize={{ minRows: 1, maxRows: 4 }}
@@ -157,28 +152,24 @@ const PostItem = ({
                 }
               />
               {commentValue && (
-                <Text
-                  style={{
-                    color: "var(--ig-primary-button)",
-                    textWrap: "nowrap",
-                    cursor: "pointer"
-                  }}
+                <TextTypo
+                  color="var(--ig-primary-button)"
+                  pointer
                   strong
-                >
-                  Post
-                </Text>
+                  text="Post"
+                />
               )}
-            </Flex>
+            </FlexBox>
           )}
-        </Flex>
-      </Flex>
+        </FlexBox>
+      </FlexBox>
       <Divider
         style={{
           marginBottom: isLastItem ? 100 : 20,
           borderColor: "var(--ig-separator)",
         }}
       />
-    </Flex>
+    </FlexBox>
   );
 };
 

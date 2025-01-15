@@ -1,16 +1,16 @@
-import { Flex, Typography } from "antd";
+import { Flex } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { UserItemType, useGetUserQuery } from "../api/apiSlice";
 import { useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-
-const { Text } = Typography;
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
 const Stories = () => {
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { data: chracters, error } = useGetUserQuery({});
+  const { data: chracters, error, isLoading } = useGetUserQuery({});
 
   const characterList = useMemo(() => {
     return chracters?.data?.slice(0, 10);
@@ -36,6 +36,7 @@ const Stories = () => {
     }
   };
 
+  if (isLoading) return "";
   if (error)
     return <p style={{ color: "white" }}>Error: Something went wrong!</p>;
 
@@ -59,12 +60,12 @@ const Stories = () => {
         onScroll={handleScroll}
       >
         {characterList?.map((item: UserItemType) => (
-          <Flex
+          <FlexBox
             gap={4}
             align="center"
             vertical
             key={item._id}
-            style={{ height: "max-content", maxWidth: 66 }}
+            style={{ maxWidth: 66 }}
           >
             <StoryBorder>
               <img
@@ -79,18 +80,16 @@ const Stories = () => {
                 }}
               />
             </StoryBorder>
-            <Text
+            <TextTypo
               ellipsis
+              fontSize="var(--system-12-font-size)"
               style={{
-                color: "white",
                 maxWidth: 66,
                 padding: "0 2px",
-                fontSize: "var(--system-12-font-size)",
               }}
-            >
-              {item.name}
-            </Text>
-          </Flex>
+              text={item.name}
+            />
+          </FlexBox>
         ))}
       </Flex>
       {showNext && (

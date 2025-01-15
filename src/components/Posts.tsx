@@ -1,4 +1,3 @@
-import { Flex } from "antd";
 import { UserItemType, useGetUserQuery } from "../api/apiSlice";
 import styled from "styled-components";
 import { memo, useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { initPost, likePost, disLikePost } from "../api/postSlice";
 import { useDoubleClick } from "../hooks/useDoubleClick";
 import PostItem from "./PostItem";
 import InfiniteScroll from "react-infinite-scroll-component";
+import FlexBox from "./FlexBox";
 
 const Posts = () => {
   const [comments, setComments] = useState<Record<number, string>>({});
@@ -74,11 +74,11 @@ const Posts = () => {
     return <p style={{ color: "white" }}>Error: Something went wrong!</p>;
 
   return (
-    <Flex
+    <FlexBox
       vertical
       align="center"
+      width={isExtraSmallAppSize ? "100vw" : "100%"}
       style={{
-        width: isExtraSmallAppSize ? "100vw" : "100%",
         maxWidth: 630,
         overflow: "visible",
       }}
@@ -112,7 +112,7 @@ const Posts = () => {
           ))}
         </InfiniteScroll>
       </PostBox>
-    </Flex>
+    </FlexBox>
   );
 };
 

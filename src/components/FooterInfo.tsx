@@ -1,6 +1,5 @@
-import { Flex, Typography } from "antd";
-
-const { Text } = Typography;
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
 type MenuInfoType = {
   key: string;
@@ -9,10 +8,10 @@ type MenuInfoType = {
 
 const FooterInfo = () => {
   return (
-    <Flex vertical gap="large">
-      <Flex gap={4} style={{ flexFlow: "wrap" }}>
+    <FlexBox vertical gap="large">
+      <FlexBox gap={4} style={{ flexFlow: "wrap" }}>
         {MenuInfo.map((item: MenuInfoType, index: number) => (
-          <Flex gap={4} key={item.key}>
+          <FlexBox gap={4} key={item.key}>
             <a
               style={{
                 fontSize: "var(--system-12-font-size)",
@@ -23,27 +22,20 @@ const FooterInfo = () => {
             >
               {item.name}
             </a>
-            <Text
-              style={{
-                fontSize: "var(--system-12-font-size)",
-                color: "var(--ig-tertiary-text)",
-              }}
-            >
-              {index + 1 < MenuInfo.length ? "•" : ""}
-            </Text>
-          </Flex>
+            <TextTypo
+              fontSize="var(--system-12-font-size)"
+              color="var(--ig-tertiary-text)"
+              text={index + 1 < MenuInfo.length ? "•" : ""}
+            />
+          </FlexBox>
         ))}
-      </Flex>
-      <Text
-        style={{
-          fontSize: "var(--system-12-font-size)",
-          color: "var(--ig-tertiary-text)",
-          textWrap: "nowrap",
-        }}
-      >
-        © 2025 Instagram from Meta
-      </Text>
-    </Flex>
+      </FlexBox>
+      <TextTypo
+        fontSize="var(--system-12-font-size)"
+        color="var(--ig-tertiary-text)"
+        text="© 2025 Instagram from Meta"
+      />
+    </FlexBox>
   );
 };
 

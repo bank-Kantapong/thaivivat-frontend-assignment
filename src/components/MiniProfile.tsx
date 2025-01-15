@@ -1,10 +1,9 @@
-import { Flex, Typography } from "antd";
-import { CSSProperties, ReactNode } from "react";
-
-const { Text } = Typography;
+import { ReactNode } from "react";
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
 type MiniProfileProps = {
-  style?: CSSProperties;
+  padding?: string;
   imageUrl: string;
   imageSize?: number;
   name: string;
@@ -15,21 +14,23 @@ type MiniProfileProps = {
 };
 
 const MiniProfile = ({
-  style,
+  padding,
   imageUrl,
   imageSize = 32,
   name,
   activeTime,
   description,
   suffix,
-  showFullName = false
+  showFullName = false,
 }: MiniProfileProps) => {
   return (
-    <Flex align="center" justify="space-between" style={{ width: "100%" }}>
-      <Flex
+    <FlexBox align="center" justify="space-between" width="100%">
+      <FlexBox
         gap={12}
         align="center"
-        style={{ ...style, maxWidth: showFullName ? "100%" : 221, width: "100%" }}
+        width="100%"
+        padding={padding}
+        style={{ maxWidth: showFullName ? "100%" : 221 }}
       >
         <img
           src={imageUrl}
@@ -40,32 +41,30 @@ const MiniProfile = ({
             cursor: "pointer",
             borderRadius: "100%",
             objectFit: "cover",
-            aspectRatio: 1
+            aspectRatio: 1,
           }}
         />
-        <Flex vertical style={{ width: "100%" }}>
-          <Flex gap={4}>
-            <Text
-              style={{ color: "white", cursor: "pointer", maxWidth: "80%" }}
+        <FlexBox vertical width="100%">
+          <FlexBox gap={4}>
+            <TextTypo
+              style={{ maxWidth: "80%" }}
               strong
               ellipsis
-            >
-              {name}
-            </Text>
+              pointer
+              text={name}
+            />
             {activeTime && (
-              <Flex gap={4}>
-                <Text style={{ color: "var(--ig-secondary-text)" }}>•</Text>
-                <Text style={{ color: "var(--ig-secondary-text)" }}>
-                  {activeTime}
-                </Text>
-              </Flex>
+              <FlexBox gap={4}>
+                <TextTypo color="var(--ig-secondary-text)" text="•" />
+                <TextTypo color="var(--ig-secondary-text)" text={activeTime} />
+              </FlexBox>
             )}
-          </Flex>
+          </FlexBox>
           {description}
-        </Flex>
-      </Flex>
+        </FlexBox>
+      </FlexBox>
       {suffix}
-    </Flex>
+    </FlexBox>
   );
 };
 

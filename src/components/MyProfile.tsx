@@ -1,8 +1,7 @@
 import MiniProfile from "./MiniProfile";
 import Profile_image from "../assets/profile.jpg";
-import { Button, Typography } from "antd";
-
-const { Text } = Typography;
+import { Button } from "antd";
+import TextTypo from "./TextTypo";
 
 const MyProfile = () => {
   return (
@@ -11,7 +10,7 @@ const MyProfile = () => {
       imageSize={44}
       name="Guest"
       description={
-        <Text style={{ color: "var(--ig-secondary-text)" }}>Mock User</Text>
+        <TextTypo color="var(--ig-secondary-text)" text="Mock User" />
       }
       suffix={<Button type="link">Switch</Button>}
     />

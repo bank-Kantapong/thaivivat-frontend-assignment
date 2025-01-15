@@ -83,5 +83,5 @@ a:hover {
 }
 
 .ant-select-item:hover {
-  background-color: var(--ig-hover-overlay) !important; /* Optional: Change background color on hover */
+  background-color: var(--ig-hover-overlay) !important;
 }

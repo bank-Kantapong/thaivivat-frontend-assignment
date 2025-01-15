@@ -1,19 +1,21 @@
-import { Drawer, Flex, Input, Skeleton, Typography } from "antd";
+import { Drawer, Input, Skeleton, Typography } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import useSearchData from "../hooks/useSearchData";
 import useDebouncedSearch from "../hooks/useDebounceSearch";
 import { UserItemType } from "../api/apiSlice";
 import MiniProfile from "./MiniProfile";
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
-type SerachDrawerType = {
+type SearchDrawerType = {
   open: boolean;
   onClose: () => void;
 };
 
-const SerachDrawer = ({ open, onClose }: SerachDrawerType) => {
+const SearchDrawer = ({ open, onClose }: SearchDrawerType) => {
   const [searchText, setSearchText] = useState<string>("");
   const { debouncedSearchText, isLoadingSearch } = useDebouncedSearch(
     searchText,
@@ -35,85 +37,82 @@ const SerachDrawer = ({ open, onClose }: SerachDrawerType) => {
   const searchContent = useMemo(() => {
     if (searchText) {
       return (
-        <Flex vertical style={{ width: "100%", height: "100%" }}>
+        <FlexBox vertical width="100%" height="100%">
           {isLoadingSearch ? (
-            <Flex vertical>
+            <FlexBox vertical>
               {Array.from(Array(5).keys()).map((index) => (
-                <Flex gap="small" key={index} style={{ padding: "8px 24px" }}>
+                <FlexBox gap="small" key={index} padding="8px 24px">
                   <Skeleton.Avatar active size={44} />
-                  <Flex vertical gap="small" style={{ width: "100%" }}>
+                  <FlexBox vertical gap="small" width="100%">
                     <Skeleton.Input active style={{ width: "100%" }} />
                     <Skeleton.Input active style={{ width: "80%" }} />
-                  </Flex>
-                </Flex>
+                  </FlexBox>
+                </FlexBox>
               ))}
-            </Flex>
+            </FlexBox>
           ) : searchedData?.length === 0 ? (
-            <Flex style={{ width: "100%", height: "100%" }}>
-              <Text
+            <FlexBox width="100%" height="100%">
+              <TextTypo
+                color="var(--ig-secondary-text)"
                 style={{
-                  color: "var(--ig-secondary-text)",
                   textAlign: "center",
                   width: "100%",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-              >
-                No results found.
-              </Text>
-            </Flex>
+                text="No results found."
+              />
+            </FlexBox>
           ) : (
             <>
-              <Flex vertical>
+              <FlexBox vertical>
                 {searchedData.map((item: UserItemType, index: number) => (
                   <MiniProfile
                     key={item._id}
                     imageUrl={item.imageUrl}
                     imageSize={44}
-                    style={{ padding: "8px 24px" }}
+                    padding="8px 24px"
                     name={item.name}
                     description={
-                      <Text
+                      <TextTypo
+                        color="var(--ig-secondary-text)"
+                        fontSize="var(--system-12-font-size)"
                         style={{
-                          color: "var(--ig-secondary-text)",
-                          fontSize: "var(--system-12-font-size)",
                           width: "97%",
                         }}
                         ellipsis
-                      >
-                        {(index + 1000).toLocaleString()} followers
-                      </Text>
+                        text={`${(index + 1000).toLocaleString()} followers`}
+                      />
                     }
                     showFullName
                   />
                 ))}
-              </Flex>
+              </FlexBox>
             </>
           )}
-        </Flex>
+        </FlexBox>
       );
     } else {
       return (
-        <Flex vertical style={{ width: "100%", height: "100%" }}>
+        <FlexBox vertical width="100%" height="100%">
           <Title level={5} style={{ color: "white", margin: 0 }}>
             Recent
           </Title>
-          <Flex style={{ width: "100%", height: "100%" }}>
-            <Text
+          <FlexBox width="100%" height="100%">
+            <TextTypo
+              color="var(--ig-secondary-text)"
               style={{
-                color: "var(--ig-secondary-text)",
                 textAlign: "center",
                 width: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
-            >
-              No recent searches.
-            </Text>
-          </Flex>
-        </Flex>
+              text="No recent searches."
+            />
+          </FlexBox>
+        </FlexBox>
       );
     }
   }, [isLoadingSearch, searchText, searchedData]);
@@ -121,7 +120,7 @@ const SerachDrawer = ({ open, onClose }: SerachDrawerType) => {
   return (
     <DrawerStyle
       title={
-        <Flex gap={40} vertical>
+        <FlexBox gap={40} vertical>
           <Title level={3} style={{ color: "white", margin: 0 }}>
             Search
           </Title>
@@ -131,7 +130,7 @@ const SerachDrawer = ({ open, onClose }: SerachDrawerType) => {
             placeholder="Search"
             onChange={(e) => setSearchText(e.target.value)}
           />
-        </Flex>
+        </FlexBox>
       }
       onClose={handleClose}
       searched={!!searchText}
@@ -145,7 +144,7 @@ const SerachDrawer = ({ open, onClose }: SerachDrawerType) => {
   );
 };
 
-export default SerachDrawer;
+export default SearchDrawer;
 
 const DrawerStyle = styled(Drawer)<{ searched?: boolean }>`
   border-radius: 0 8px 8px 0;

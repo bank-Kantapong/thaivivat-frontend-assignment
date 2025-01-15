@@ -1,4 +1,4 @@
-import { Dropdown, Flex, Select, Skeleton, Typography } from "antd";
+import { Dropdown, Select, Skeleton, Typography } from "antd";
 import Instagram_text_logo from "../assets/Instagram_text_logo.png";
 import {
   UsergroupAddOutlined,
@@ -12,8 +12,10 @@ import useDebouncedSearch from "../hooks/useDebounceSearch";
 import useSearchData from "../hooks/useSearchData";
 import { UserItemType } from "../api/apiSlice";
 import MiniProfile from "./MiniProfile";
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 const AppHeader = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -26,43 +28,29 @@ const AppHeader = () => {
   const items = [
     {
       label: (
-        <Flex align="center" justify="space-between" gap={16}>
-          <Text
-            style={{
-              color: "var(--ig-primary-text)",
-              fontSize: "var(--system-16-font-size)",
-            }}
-          >
-            Following
-          </Text>
+        <FlexBox align="center" justify="space-between" gap={16}>
+          <TextTypo fontSize="var(--system-16-font-size)" text="Following" />
           <UsergroupAddOutlined
             style={{
               color: "var(--ig-primary-text)",
               fontSize: 22,
             }}
           />
-        </Flex>
+        </FlexBox>
       ),
       key: "following",
     },
     {
       label: (
-        <Flex align="center" justify="space-between" gap={16}>
-          <Text
-            style={{
-              color: "var(--ig-primary-text)",
-              fontSize: "var(--system-16-font-size)",
-            }}
-          >
-            Favorites
-          </Text>
+        <FlexBox align="center" justify="space-between" gap={16}>
+          <TextTypo fontSize="var(--system-16-font-size)" text="Favorites" />
           <StarOutlined
             style={{
               color: "var(--ig-primary-text)",
               fontSize: 22,
             }}
           />
-        </Flex>
+        </FlexBox>
       ),
       key: "favorites",
     },
@@ -82,11 +70,7 @@ const AppHeader = () => {
   };
 
   return (
-    <Flex
-      align="center"
-      justify="space-between"
-      style={{ height: 40, width: "100%" }}
-    >
+    <FlexBox align="center" justify="space-between" height="40px" width="100%">
       <DropsownStyle menu={{ items }} trigger={["click"]}>
         <img
           alt="logo"
@@ -96,7 +80,7 @@ const AppHeader = () => {
           style={{ filter: "invert(1)" }}
         />
       </DropsownStyle>
-      <Flex
+      <FlexBox
         align="center"
         gap={20}
         style={{ position: "sticky", right: 16, zIndex: 2 }}
@@ -108,79 +92,70 @@ const AppHeader = () => {
           optionFilterProp="label"
           suffixIcon={null}
           placeholder={
-            <Flex align="center" gap="small">
+            <FlexBox align="center" gap="small">
               <SearchOutlined
                 style={{
                   fontSize: "var(--system-16-font-size)",
                   color: "var(--ig-secondary-text)",
                 }}
               />
-              <Text
-                style={{
-                  fontSize: "var(--system-16-font-size)",
-                  color: "var(--ig-secondary-text)",
-                  fontWeight: 300,
-                }}
-              >
-                Search
-              </Text>
-            </Flex>
+              <TextTypo
+                fontSize="var(--system-16-font-size)"
+                color="var(--ig-secondary-text)"
+                weight={300}
+                text="Search"
+              />
+            </FlexBox>
           }
           onSearch={onChangeSearch}
           options={searchOptions}
           notFoundContent={
             <>
               {isLoadingSearch ? (
-                <Flex vertical>
+                <FlexBox vertical>
                   {Array.from(Array(5).keys()).map((index) => (
-                    <Flex
-                      gap="small"
-                      key={index}
-                      style={{ padding: "8px 0px" }}
-                    >
+                    <FlexBox gap="small" key={index} padding="8px 0px">
                       <Skeleton.Avatar active size={44} />
-                      <Flex vertical gap="small" style={{ width: "100%" }}>
+                      <FlexBox vertical gap="small" width="100%">
                         <Skeleton.Input active style={{ width: "100%" }} />
                         <Skeleton.Input active style={{ width: "80%" }} />
-                      </Flex>
-                    </Flex>
+                      </FlexBox>
+                    </FlexBox>
                   ))}
-                </Flex>
+                </FlexBox>
               ) : searchText && searchedData?.length === 0 ? (
-                <Flex style={{ width: "100%", height: "100%" }}>
-                  <Text
+                <FlexBox width="100%" height="100%">
+                  <TextTypo
+                    color="var(--ig-secondary-text)"
                     style={{
-                      color: "var(--ig-secondary-text)",
                       textAlign: "center",
                       width: "100%",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                  >
-                    No results found.
-                  </Text>
-                </Flex>
+                    text="No results found."
+                  />
+                </FlexBox>
               ) : (
-                <Flex vertical style={{ width: "100%", height: "100%" }}>
+                <FlexBox vertical width="100%" height="100%">
                   <Title level={5} style={{ color: "white", margin: 0 }}>
                     Recent
                   </Title>
-                  <Flex style={{ width: "100%", height: "100%" }}>
-                    <Text
+                  <FlexBox width="100%" height="100%">
+                    <TextTypo
+                      color="var(--ig-secondary-text)"
                       style={{
-                        color: "var(--ig-secondary-text)",
                         textAlign: "center",
                         width: "100%",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                       }}
-                    >
-                      No recent searches.
-                    </Text>
-                  </Flex>
-                </Flex>
+                      text="No recent searches."
+                    />
+                  </FlexBox>
+                </FlexBox>
               )}
             </>
           }
@@ -194,19 +169,18 @@ const AppHeader = () => {
                   key={getProfileData._id}
                   imageUrl={getProfileData.imageUrl}
                   imageSize={44}
-                  style={{ padding: "8px 0px" }}
+                  padding="8px 0px"
                   name={getProfileData.name}
                   description={
-                    <Text
+                    <TextTypo
+                      color="var(--ig-secondary-text)"
+                      fontSize="var(--system-12-font-size)"
                       style={{
-                        color: "var(--ig-secondary-text)",
-                        fontSize: "var(--system-12-font-size)",
                         width: "97%",
                       }}
                       ellipsis
-                    >
-                      {(info.index + 1000).toLocaleString()} followers
-                    </Text>
+                      text={`${(info.index + 1000).toLocaleString()} followers`}
+                    />
                   }
                 />
               );
@@ -219,8 +193,8 @@ const AppHeader = () => {
             color: "var(--ig-primary-text)",
           }}
         />
-      </Flex>
-    </Flex>
+      </FlexBox>
+    </FlexBox>
   );
 };
 

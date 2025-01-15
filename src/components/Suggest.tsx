@@ -1,9 +1,9 @@
-import { Button, Flex, Typography } from "antd";
+import { Button } from "antd";
 import { useGetUserQuery, UserItemType } from "../api/apiSlice";
 import { useMemo } from "react";
 import MiniProfile from "./MiniProfile";
-
-const { Text } = Typography;
+import FlexBox from "./FlexBox";
+import TextTypo from "./TextTypo";
 
 const Suggest = () => {
   const { data: chracters, error } = useGetUserQuery({});
@@ -12,41 +12,39 @@ const Suggest = () => {
     return chracters?.data?.slice(0, 5);
   }, [chracters?.data]);
 
-  if (error) return <p style={{ color: "white" }}>Error: Something went wrong!</p>;
+  if (error)
+    return <p style={{ color: "white" }}>Error: Something went wrong!</p>;
 
   return (
-    <Flex vertical style={{ margin: "24px 0 20px" }}>
-      <Flex justify="space-between" style={{ padding: "4px 16px 4px 0" }}>
-        <Text style={{ color: "var(--ig-secondary-text)" }}>
-          Suggested for you
-        </Text>
-        <Text style={{ color: "white" }}>See All</Text>
-      </Flex>
-      <Flex vertical style={{ padding: "8px 0" }}>
+    <FlexBox vertical margin="24px 0 20px">
+      <FlexBox justify="space-between" padding="4px 16px 4px 0">
+        <TextTypo color="var(--ig-secondary-text)" text="Suggested for you" />
+        <TextTypo text="See All" />
+      </FlexBox>
+      <FlexBox vertical padding="8px 0">
         {suggestUsers?.map((item: UserItemType) => (
           <MiniProfile
             key={item._id}
             imageUrl={item.imageUrl}
-            style={{ padding: "8px 0" }}
+            padding="8px 0"
             imageSize={44}
             name={item.name}
             description={
-              <Text
+              <TextTypo
+                color="var(--ig-secondary-text)"
+                fontSize="var(--system-12-font-size)"
                 style={{
-                  color: "var(--ig-secondary-text)",
-                  fontSize: "var(--system-12-font-size)",
-                  width: "97%"
+                  width: "97%",
                 }}
                 ellipsis
-              >
-                Followed by Mufasa + 10 more
-              </Text>
+                text="Followed by Mufasa + 10 more"
+              />
             }
             suffix={<Button type="link">Follow</Button>}
           />
         ))}
-      </Flex>
-    </Flex>
+      </FlexBox>
+    </FlexBox>
   );
 };
 
