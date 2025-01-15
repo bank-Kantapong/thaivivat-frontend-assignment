@@ -4,6 +4,7 @@ import {
   HeartOutlined,
   MessageOutlined,
   BookOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import { UserItemType, useGetUserQuery } from "../api/apiSlice";
 import styled from "styled-components";
@@ -61,51 +62,72 @@ const Posts = () => {
                 width={468}
                 style={{ objectFit: "cover", width: "min(470px, 100vw)" }}
               />
-
               <Flex
-                align="center"
-                justify="space-between"
-                style={{ padding: "12px 0" }}
+                vertical
+                style={{ padding: isFitAppSize ? "16px 16px 0" : "0" }}
               >
-                <Flex gap="middle">
-                  <HeartOutlined
-                    style={{ fontSize: 24, color: "white", cursor: "pointer" }}
-                  />
-                  <MessageOutlined
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  style={{ padding: isFitAppSize ? "0 0 12px" : "12px 0" }}
+                >
+                  <Flex gap="middle">
+                    <HeartOutlined
+                      style={{
+                        fontSize: 24,
+                        color: "white",
+                        cursor: "pointer",
+                      }}
+                    />
+                    <MessageOutlined
+                      style={{
+                        fontSize: 24,
+                        color: "white",
+                        cursor: "pointer",
+                      }}
+                    />
+                    <SendOutlined
+                      style={{
+                        fontSize: 24,
+                        color: "white",
+                        cursor: "pointer",
+                        transform: "rotate(-25deg)",
+                        paddingBottom: "8px"
+                      }}
+                    />
+                  </Flex>
+                  <BookOutlined
                     style={{ fontSize: 24, color: "white", cursor: "pointer" }}
                   />
                 </Flex>
-                <BookOutlined
-                  style={{ fontSize: 24, color: "white", cursor: "pointer" }}
-                />
-              </Flex>
-              <Text style={{ color: "white" }} strong>
-                10 likes
-              </Text>
-              <Flex gap="small">
                 <Text style={{ color: "white" }} strong>
-                  {item.name}
+                  10 likes
                 </Text>
-                <Text style={{ color: "white" }}>Hello</Text>
-              </Flex>
-              <Flex align="center">
-                <CommentInput
-                  placeholder="Add a comment..."
-                  autoSize={{ minRows: 1, maxRows: 4 }}
-                  variant="borderless"
-                  onChange={(e) => setCommentValue(e.target.value)}
-                />
-                {commentValue && (
-                  <Text
-                    style={{
-                      color: "var(--ig-primary-button)",
-                      textWrap: "nowrap",
-                    }}
-                    strong
-                  >
-                    Post
+                <Flex gap="small">
+                  <Text style={{ color: "white" }} strong>
+                    {item.name}
                   </Text>
-                )}
+                  <Text style={{ color: "white" }}>Hello</Text>
+                </Flex>
+                <Flex align="center">
+                  <CommentInput
+                    placeholder="Add a comment..."
+                    autoSize={{ minRows: 1, maxRows: 4 }}
+                    variant="borderless"
+                    onChange={(e) => setCommentValue(e.target.value)}
+                  />
+                  {commentValue && (
+                    <Text
+                      style={{
+                        color: "var(--ig-primary-button)",
+                        textWrap: "nowrap",
+                      }}
+                      strong
+                    >
+                      Post
+                    </Text>
+                  )}
+                </Flex>
               </Flex>
             </Flex>
             <Divider

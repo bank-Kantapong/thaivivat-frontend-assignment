@@ -20,6 +20,7 @@ import Instagram_logo from "./assets/Instagram_logo.webp";
 import thread_logo from "./assets/thread_logo.png";
 import useResponsive from "./hooks/useResponsive";
 import AppHeader from "./components/AppHeader";
+import AppFooter from "./components/AppFooter";
 
 const { Sider, Header, Content, Footer } = Layout;
 
@@ -115,7 +116,6 @@ function App() {
       <Layout
         style={{
           height: "100%",
-          paddingRight: "calc(100vw - 100%)",
         }}
       >
         {isAppSize && (
@@ -149,8 +149,8 @@ function App() {
           </RowStyle>
         </Content>
         {isAppSize && (
-          <FooterStyle style={{ textAlign: "center" }}>
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          <FooterStyle>
+            <AppFooter />
           </FooterStyle>
         )}
       </Layout>
@@ -238,4 +238,5 @@ const FooterStyle = styled(Footer)`
   z-index: 10;
   background-color: var(--ig-primary-background);
   border-top: 1px solid var(--ig-separator);
+  display: flex;
 `;
