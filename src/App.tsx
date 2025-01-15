@@ -22,6 +22,8 @@ import thread_logo from "./assets/thread_logo.png";
 import useResponsive from "./hooks/useResponsive";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
+import { useState } from "react";
+import SerachDrawer from "./components/SerachDrawer";
 
 const { Sider, Header, Content, Footer } = Layout;
 
@@ -92,33 +94,51 @@ const FooterMenuItems: MenuItem[] = [
 ];
 
 function App() {
+  const [activeMenu, setActiveMenu] = useState<string>("home");
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
   const { isHideNavMenu, isHideRightContent, isAppSize } = useResponsive();
+
+  const isCollapseNav = isHideNavMenu || collapsed;
+
+  const onClickMenu = (key: string) => {
+    setActiveMenu(key);
+    if (key === "search") {
+      setCollapsed(true);
+      setOpenSearch(true);
+    } else {
+      setCollapsed(false);
+      setOpenSearch(false);
+    }
+  };
 
   return (
     <LayoutStyle hasSider>
       {!isAppSize && (
         <SiderStyle
-          collapsed={isHideNavMenu}
+          collapsed={isCollapseNav}
           collapsedWidth="72px"
           zeroWidthTriggerStyle={{ display: "none" }}
           width={244}
+          style={{ zIndex: 1001 }}
         >
           <Flex justify="space-between" vertical style={{ height: "100%" }}>
             <Flex vertical>
               <div style={{ padding: "25px 12px 0px", marginBottom: "19px" }}>
                 <img
                   alt="logo"
-                  src={isHideNavMenu ? Instagram_logo : Instagram_text_logo}
-                  width={isHideNavMenu ? 22 : 103}
-                  height={isHideNavMenu ? 22 : 40}
-                  style={{ filter: isHideNavMenu ? "none" : "invert(1)" }}
+                  src={isCollapseNav ? Instagram_logo : Instagram_text_logo}
+                  width={isCollapseNav ? 22 : 103}
+                  height={isCollapseNav ? 22 : 40}
+                  style={{ filter: isCollapseNav ? "none" : "invert(1)" }}
                 />
               </div>
               <MenuStyle
                 mode="inline"
-                defaultSelectedKeys={["home"]}
+                selectedKeys={[activeMenu]}
                 items={items}
                 style={{ height: "100%" }}
+                onClick={({ key }: { key: string }) => onClickMenu(key)}
               />
             </Flex>
             <div>
@@ -145,7 +165,7 @@ function App() {
                 ? "calc(100% + 72px)"
                 : isAppSize
                 ? "100%"
-                : "calc(100% + 244px)",
+                : "calc(100% + 300px)",
             }}
           >
             <ColStyle
@@ -177,6 +197,14 @@ function App() {
           </FooterStyle>
         )}
       </Layout>
+      <SerachDrawer
+        open={openSearch}
+        onClose={() => {
+          setActiveMenu("home");
+          setCollapsed(false);
+          setOpenSearch(false);
+        }}
+      />
     </LayoutStyle>
   );
 }

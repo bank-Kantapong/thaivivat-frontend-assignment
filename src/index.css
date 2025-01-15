@@ -40,3 +40,39 @@ a:hover {
 .ant-dropdown .ant-dropdown-menu {
   background: var(--ig-separator);
 }
+
+.ant-drawer .ant-drawer-mask {
+  background: none;
+}
+
+.ant-drawer-content-wrapper {
+  margin-left: 74px;
+}
+
+.ant-drawer-content {
+  background: var(--ig-primary-background) !important;
+  border: 1px solid var(--ig-separator);
+  border-left: none;
+}
+
+.ant-skeleton.ant-skeleton-active .ant-skeleton-avatar {
+  background: linear-gradient(
+    90deg,
+    rgb(217 217 217 / 14%) 25%,
+    rgb(153 152 152 / 15%) 37%,
+    rgb(95 95 95 / 34%) 63%
+  );
+  background-size: 400% 100%;
+}
+
+.ant-skeleton.ant-skeleton-active .ant-skeleton-input {
+  background: linear-gradient(
+    90deg,
+    rgb(217 217 217 / 14%) 25%,
+    rgb(153 152 152 / 15%) 37%,
+    rgb(95 95 95 / 34%) 63%
+  );
+  background-size: 400% 100%;
+  border-radius: 6px;
+  height: 18px;
+}
