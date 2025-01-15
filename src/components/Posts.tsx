@@ -1,20 +1,23 @@
-import { Avatar, Divider, Flex, Input, Typography } from "antd";
+import { Divider, Flex, Input, Typography } from "antd";
 import {
   EllipsisOutlined,
   HeartOutlined,
   MessageOutlined,
   BookOutlined,
 } from "@ant-design/icons";
-import { StoriesItemType, useGetCharacterQuery } from "../api/apiSlice";
+import { UserItemType, useGetUserQuery } from "../api/apiSlice";
 import styled from "styled-components";
 import { useState } from "react";
+import MiniProfile from "./MiniProfile";
+import useResponsive from "../hooks/useResponsive";
 
 const { Text } = Typography;
 const { TextArea } = Input;
 
 const Posts = () => {
   const [commentValue, setCommentValue] = useState<string>("");
-  const { data: chracters, error, isLoading } = useGetCharacterQuery({});
+  const { isFitAppSize, isExtraSmallAppSize } = useResponsive();
+  const { data: chracters, error, isLoading } = useGetUserQuery({});
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: Something went wrong!</p>;
@@ -24,44 +27,41 @@ const Posts = () => {
       vertical
       align="center"
       style={{
-        width: "100%",
+        width: isExtraSmallAppSize ? "100vw" : "100%",
+        maxWidth: 630,
         overflow: "visible",
       }}
     >
       <PostBox>
-        {chracters?.data?.map((item: StoriesItemType) => (
+        {chracters?.data?.slice(0, 3)?.map((item: UserItemType) => (
           <Flex vertical key={item._id}>
             <Flex vertical>
-              <Flex
-                align="center"
-                justify="space-between"
-                style={{ width: "100%" }}
-              >
-                <Flex
-                  gap={12}
-                  align="center"
-                  style={{ padding: "0 0 12px 4px" }}
-                >
-                  <Avatar icon={<img src={item.imageUrl} alt="profile" />} />
-                  <Flex vertical>
-                    <Flex gap={4}>
-                      <Text style={{ color: "white" }} strong>
-                        {item.name}
-                      </Text>
-                      <Text style={{ color: "var(--ig-secondary-text)" }}>
-                        •
-                      </Text>
-                      <Text style={{ color: "var(--ig-secondary-text)" }}>
-                        16m
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-                <EllipsisOutlined
-                  style={{ fontSize: 24, color: "white", cursor: "pointer" }}
+              <div style={{ padding: isFitAppSize ? "12px 14px 0" : "0" }}>
+                <MiniProfile
+                  style={{
+                    padding: "0 0 12px 4px",
+                  }}
+                  imageUrl={item.imageUrl}
+                  name={item.name}
+                  activeTime={isFitAppSize ? "" : "16m"}
+                  suffix={
+                    <EllipsisOutlined
+                      style={{
+                        fontSize: 24,
+                        color: "white",
+                        cursor: "pointer",
+                      }}
+                    />
+                  }
                 />
-              </Flex>
-              <img src={item.imageUrl} alt="post" width={468} />
+              </div>
+              <img
+                src={item.imageUrl}
+                alt="post"
+                width={468}
+                style={{ objectFit: "cover", width: "min(470px, 100vw)" }}
+              />
+
               <Flex
                 align="center"
                 justify="space-between"

@@ -10,6 +10,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--ig-primary-background);
+  overflow: hidden auto;
 }
 
 #root {
@@ -18,5 +20,23 @@ body {
 }
 
 .ant-layout {
+  height: 100dvh;
   background: var(--ig-primary-background);
+}
+
+.ant-btn-variant-link {
+  color: var(--ig-primary-button);
+  font-size: var(--system-12-font-size);
+}
+
+.ant-btn-variant-link:not(:disabled):not(.ant-btn-disabled):hover {
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.ant-dropdown .ant-dropdown-menu {
+  background: var(--ig-separator);
 }

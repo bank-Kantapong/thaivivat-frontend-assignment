@@ -14,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
     --ig-tertiary-text: rgb(115, 115, 115);
     --ig-separator: rgb(38, 38, 38);
     --ig-hover-overlay: rgba(255, 255, 255, .1);
+    --ig-search-input: rgb(54 54 54);
   }
 `;
 

@@ -1,6 +1,6 @@
 import { Flex, Typography } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { StoriesItemType, useGetCharacterQuery } from "../api/apiSlice";
+import { UserItemType, useGetUserQuery } from "../api/apiSlice";
 import { useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -10,7 +10,7 @@ const Stories = () => {
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { data: chracters, error, isLoading } = useGetCharacterQuery({});
+  const { data: chracters, error, isLoading } = useGetUserQuery({});
 
   const characterList = useMemo(() => {
     return chracters?.data?.slice(0, 10);
@@ -42,7 +42,7 @@ const Stories = () => {
   return (
     <div style={{ position: "relative" }}>
       {showPrev && (
-        <ArrowButton onClick={handlePrev} style={{ left: 0 }}>
+        <ArrowButton onClick={handlePrev} style={{ left: 16 }}>
           <LeftOutlined />
         </ArrowButton>
       )}
@@ -58,7 +58,7 @@ const Stories = () => {
         ref={scrollRef}
         onScroll={handleScroll}
       >
-        {characterList?.map((item: StoriesItemType) => (
+        {characterList?.map((item: UserItemType) => (
           <Flex
             gap={4}
             align="center"
@@ -94,7 +94,7 @@ const Stories = () => {
         ))}
       </Flex>
       {showNext && (
-        <ArrowButton onClick={handleNext} style={{ right: 0 }}>
+        <ArrowButton onClick={handleNext} style={{ right: 16 }}>
           <RightOutlined />
         </ArrowButton>
       )}
@@ -120,8 +120,8 @@ const ArrowButton = styled.div`
 `;
 
 const StoryBorder = styled.div`
-  width: 66px;
-  height: 66px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: conic-gradient(
     #f09433,

@@ -1,19 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export type StoriesItemType = {
+export type UserItemType = {
   _id: string;
   name: string;
   imageUrl: string;
+  videoGames?: string[];
 }
 
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.disneyapi.dev' }),
   endpoints: (builder) => ({
-    getCharacter: builder.query({
+    getUser: builder.query({
       query: () => '/character',
     }),
   }),
 });
 
-export const { useGetCharacterQuery } = apiSlice;
+export const { useGetUserQuery } = apiSlice;

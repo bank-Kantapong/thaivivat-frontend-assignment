@@ -1,4 +1,4 @@
-import { Col, Flex, Grid, Layout, Menu, MenuProps, Row } from "antd";
+import { Col, Flex, Layout, Menu, MenuProps, Row } from "antd";
 import {
   HomeFilled,
   SearchOutlined,
@@ -9,7 +9,6 @@ import {
   PlusSquareOutlined,
   MenuOutlined,
 } from "@ant-design/icons";
-import { useMemo } from "react";
 import styled from "styled-components";
 import Stories from "./components/Stories";
 import Posts from "./components/Posts";
@@ -19,9 +18,10 @@ import FooterInfo from "./components/FooterInfo";
 import Instagram_text_logo from "./assets/Instagram_text_logo.png";
 import Instagram_logo from "./assets/Instagram_logo.webp";
 import thread_logo from "./assets/thread_logo.png";
+import useResponsive from "./hooks/useResponsive";
+import AppHeader from "./components/AppHeader";
 
 const { Sider, Header, Content, Footer } = Layout;
-const { useBreakpoint } = Grid;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -77,27 +77,16 @@ const FooterMenuItems: MenuItem[] = [
 ];
 
 function App() {
-  const screens = useBreakpoint();
-
-  const isHideNavMenu = useMemo(() => {
-    return !screens.xl;
-  }, [screens.xl]);
-
-  const isHideRightContent = useMemo(() => {
-    return !screens.lg;
-  }, [screens.lg]);
-
-  const isAppSize = useMemo(() => {
-    return !screens.md;
-  }, [screens.md]);
+  const { isHideNavMenu, isHideRightContent, isAppSize } = useResponsive();
 
   return (
-    <LayoutStyle>
+    <LayoutStyle hasSider>
       {!isAppSize && (
         <SiderStyle
-          breakpoint="xl"
-          collapsedWidth="0"
+          collapsed={isHideNavMenu}
+          collapsedWidth="72px"
           zeroWidthTriggerStyle={{ display: "none" }}
+          width={244}
         >
           <Flex justify="space-between" vertical style={{ height: "100%" }}>
             <Flex vertical>
@@ -123,10 +112,19 @@ function App() {
           </Flex>
         </SiderStyle>
       )}
-      <Layout>
-        {isAppSize && <Header />}
-        <Content>
-          <RowStyle>
+      <Layout
+        style={{
+          height: "100%",
+          paddingRight: "calc(100vw - 100%)",
+        }}
+      >
+        {isAppSize && (
+          <HeaderStyle>
+            <AppHeader />
+          </HeaderStyle>
+        )}
+        <Content style={{ paddingTop: isAppSize ? "60px" : "" }}>
+          <RowStyle wrap={false}>
             <ColStyle
               span={isHideRightContent ? 24 : 16}
               style={{ maxWidth: 630, width: "100%" }}
@@ -137,8 +135,11 @@ function App() {
               </Flex>
             </ColStyle>
             {!isHideRightContent && (
-              <ColStyle span={8} style={{ width: 319, paddingLeft: 64 }}>
-                <Flex vertical style={{ marginTop: "36px" }}>
+              <ColStyle
+                span={8}
+                style={{ maxWidth: 383, paddingLeft: 64, width: "100%" }}
+              >
+                <Flex vertical style={{ marginTop: "36px", padding: "0 16px" }}>
                   <MyProfile />
                   <Suggest />
                   <FooterInfo />
@@ -148,9 +149,9 @@ function App() {
           </RowStyle>
         </Content>
         {isAppSize && (
-          <Footer style={{ textAlign: "center" }}>
+          <FooterStyle style={{ textAlign: "center" }}>
             Ant Design ©{new Date().getFullYear()} Created by Ant UED
-          </Footer>
+          </FooterStyle>
         )}
       </Layout>
     </LayoutStyle>
@@ -160,24 +161,15 @@ function App() {
 export default App;
 
 const LayoutStyle = styled(Layout)`
-  height: 100%;
+  height: 100vh;
 `;
 
 const SiderStyle = styled(Sider)`
   background: black;
   padding: 8px 12px 20px;
   border-right: 1px solid var(--ig-separator);
-  &.ant-layout-sider.ant-layout-sider-dark {
-    flex: 0 0 244px !important;
-    max-width: 244px !important;
-    min-width: 244px !important;
-    width: 244px !important;
-  }
-  &.ant-layout-sider.ant-layout-sider-dark.ant-layout-sider-collapsed.ant-layout-sider-below.ant-layout-sider-zero-width {
-    flex: 0 0 72px !important;
-    max-width: 72px !important;
-    min-width: 72px !important;
-    width: 72px !important;
+  &.ant-layout-sider .ant-layout-sider-trigger {
+    display: none;
   }
 `;
 
@@ -223,4 +215,27 @@ const ColStyle = styled(Col)`
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
+
+const HeaderStyle = styled(Header)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 10;
+  background-color: var(--ig-primary-background);
+  border-bottom: 1px solid var(--ig-separator);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+`;
+
+const FooterStyle = styled(Footer)`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 48px;
+  z-index: 10;
+  background-color: var(--ig-primary-background);
+  border-top: 1px solid var(--ig-separator);
 `;
