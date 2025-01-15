@@ -14,7 +14,7 @@ const userPostSlice = createSlice({
   initialState,
   reducers: {
     initPost: (state, action: PayloadAction<UserItemType[]>) => {
-      state.items = action.payload;
+      state.items = [...state.items, ...action.payload];
     },
     likePost: (state, action: PayloadAction<number>) => {
       state.items = state.items.map((item) => {

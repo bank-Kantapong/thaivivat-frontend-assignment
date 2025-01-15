@@ -6,14 +6,13 @@ import MiniProfile from "./MiniProfile";
 const { Text } = Typography;
 
 const Suggest = () => {
-  const { data: chracters, error, isLoading } = useGetUserQuery({});
+  const { data: chracters, error } = useGetUserQuery({});
 
   const suggestUsers = useMemo(() => {
     return chracters?.data?.slice(0, 5);
   }, [chracters?.data]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: Something went wrong!</p>;
+  if (error) return <p style={{ color: "white" }}>Error: Something went wrong!</p>;
 
   return (
     <Flex vertical style={{ margin: "24px 0 20px" }}>

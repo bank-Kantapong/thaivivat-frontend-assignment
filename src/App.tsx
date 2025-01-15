@@ -16,6 +16,7 @@ import MyProfile from "./components/MyProfile";
 import Suggest from "./components/Suggest";
 import FooterInfo from "./components/FooterInfo";
 import Instagram_text_logo from "./assets/Instagram_text_logo.png";
+import Profile from "./assets/Profile.jpg";
 import Instagram_logo from "./assets/Instagram_logo.webp";
 import thread_logo from "./assets/thread_logo.png";
 import useResponsive from "./hooks/useResponsive";
@@ -61,6 +62,19 @@ const items: MenuItem[] = [
     key: "create",
     label: "Create",
     icon: <PlusSquareOutlined />,
+  },
+  {
+    key: "profile",
+    label: "Profile",
+    icon: (
+      <img
+        src={Profile}
+        alt="thread"
+        width={22}
+        height={22}
+        style={{ borderRadius: "100%" }}
+      />
+    ),
   },
 ];
 
@@ -115,8 +129,7 @@ function App() {
       )}
       <Layout
         style={{
-          height: "100%",
-          overflow: "hidden auto",
+          height: "100vh",
         }}
       >
         {isAppSize && (
@@ -125,7 +138,16 @@ function App() {
           </HeaderStyle>
         )}
         <Content style={{ paddingTop: isAppSize ? "60px" : "" }}>
-          <RowStyle wrap={false}>
+          <RowStyle
+            wrap={false}
+            style={{
+              width: isHideNavMenu
+                ? "calc(100% + 72px)"
+                : isAppSize
+                ? "100%"
+                : "calc(100% + 244px)",
+            }}
+          >
             <ColStyle
               span={isHideRightContent ? 24 : 16}
               style={{ maxWidth: 630, width: "100%" }}
@@ -169,6 +191,8 @@ const SiderStyle = styled(Sider)`
   background: black;
   padding: 8px 12px 20px;
   border-right: 1px solid var(--ig-separator);
+  position: fixed;
+  height: 100%;
   &.ant-layout-sider .ant-layout-sider-trigger {
     display: none;
   }
@@ -206,7 +230,7 @@ const MenuStyle = styled(Menu)`
 
 const RowStyle = styled(Row)`
   height: 100%;
-  width: 100%;
+  width: calc(100% + 244px);
   display: flex;
   justify-content: center;
   align-items: stretch;

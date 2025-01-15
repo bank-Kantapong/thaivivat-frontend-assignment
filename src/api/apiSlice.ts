@@ -6,6 +6,7 @@ export type UserItemType = {
   imageUrl: string;
   videoGames?: string[];
   isLike?: boolean;
+  canComment?: boolean;
 }
 
 export const apiSlice = createApi({

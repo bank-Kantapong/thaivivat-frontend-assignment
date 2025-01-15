@@ -10,7 +10,7 @@ const Stories = () => {
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { data: chracters, error, isLoading } = useGetUserQuery({});
+  const { data: chracters, error } = useGetUserQuery({});
 
   const characterList = useMemo(() => {
     return chracters?.data?.slice(0, 10);
@@ -36,8 +36,8 @@ const Stories = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: Something went wrong!</p>;
+  if (error)
+    return <p style={{ color: "white" }}>Error: Something went wrong!</p>;
 
   return (
     <div style={{ position: "relative" }}>
