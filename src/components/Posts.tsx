@@ -5,12 +5,17 @@ import {
   MessageOutlined,
   BookOutlined,
   SendOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import { UserItemType, useGetUserQuery } from "../api/apiSlice";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MiniProfile from "./MiniProfile";
 import useResponsive from "../hooks/useResponsive";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { initPost, likePost, disLikePost } from "../api/postSlice";
+import { useDoubleClick } from "../hooks/useDoubleClick";
 
 const { Text } = Typography;
 const { TextArea } = Input;
@@ -18,7 +23,24 @@ const { TextArea } = Input;
 const Posts = () => {
   const [commentValue, setCommentValue] = useState<string>("");
   const { isFitAppSize, isExtraSmallAppSize } = useResponsive();
+  const { likeId, handleDoubleTap } = useDoubleClick();
   const { data: chracters, error, isLoading } = useGetUserQuery({});
+  const userPostItems = useSelector((state: RootState) => state.userPost.items);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!isLoading && chracters?.data) {
+      dispatch(initPost(chracters.data));
+    }
+  }, [chracters, dispatch, isLoading]);
+
+  const handleLikePost = (_id: number) => {
+    dispatch(likePost(_id));
+  };
+
+  const handleDisLikePost = (_id: number) => {
+    dispatch(disLikePost(_id));
+  };
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: Something went wrong!</p>;
@@ -34,7 +56,7 @@ const Posts = () => {
       }}
     >
       <PostBox>
-        {chracters?.data
+        {userPostItems
           ?.slice(0, 3)
           ?.map((item: UserItemType, index: number) => (
             <Flex vertical key={item._id}>
@@ -58,17 +80,25 @@ const Posts = () => {
                     }
                   />
                 </div>
-                <img
-                  src={item.imageUrl}
-                  alt="post"
-                  width={468}
-                  style={{
-                    objectFit: "cover",
-                    width: "min(470px, 100vw)",
-                    borderRadius: "4px",
-                    border: "1px solid var(--ig-separator)",
+                <ImageContainer
+                  onClick={() => {
+                    handleDoubleTap(item._id);
+                    handleLikePost(item._id);
                   }}
-                />
+                >
+                  <img
+                    src={item.imageUrl}
+                    alt="post"
+                    width={468}
+                    style={{
+                      objectFit: "cover",
+                      width: "min(470px, 100vw)",
+                      borderRadius: "4px",
+                      border: "1px solid var(--ig-separator)",
+                    }}
+                  />
+                  <HeartIcon className={likeId === item._id ? "show" : ""} />
+                </ImageContainer>
                 <Flex
                   vertical
                   style={{ padding: isFitAppSize ? "16px 16px 0" : "0" }}
@@ -79,13 +109,26 @@ const Posts = () => {
                     style={{ padding: isFitAppSize ? "0 0 12px" : "12px 0" }}
                   >
                     <Flex gap="middle">
-                      <HeartOutlined
-                        style={{
-                          fontSize: 24,
-                          color: "white",
-                          cursor: "pointer",
-                        }}
-                      />
+                      {item?.isLike ? (
+                        <HeartFilled
+                          style={{
+                            fontSize: 24,
+                            color: "var(--ig-badge)",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleDisLikePost(item._id)}
+                        />
+                      ) : (
+                        <HeartOutlined
+                          style={{
+                            fontSize: 24,
+                            color: "white",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleLikePost(item._id)}
+                        />
+                      )}
+
                       <MessageOutlined
                         style={{
                           fontSize: 24,
@@ -142,7 +185,10 @@ const Posts = () => {
                 </Flex>
               </Flex>
               <Divider
-                style={{ marginBottom: index + 1 === 3 ? 100 : 20, borderColor: "var(--ig-separator)" }}
+                style={{
+                  marginBottom: index + 1 === 3 ? 100 : 20,
+                  borderColor: "var(--ig-separator)",
+                }}
               />
             </Flex>
           ))}
@@ -167,5 +213,27 @@ const CommentInput = styled(TextArea)`
   caret-color: white;
   &::placeholder {
     color: var(--ig-secondary-text);
+  }
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const HeartIcon = styled(HeartFilled)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 100px;
+  color: var(--ig-badge);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+
+  &.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
 `;

@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export type UserItemType = {
-  _id: string;
+  _id: number;
   name: string;
   imageUrl: string;
   videoGames?: string[];
+  isLike?: boolean;
 }
 
 export const apiSlice = createApi({
