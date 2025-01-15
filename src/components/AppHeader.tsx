@@ -1,4 +1,4 @@
-import { Dropdown, Flex, Select, Typography } from "antd";
+import { Dropdown, Flex, Select, Skeleton, Typography } from "antd";
 import Instagram_text_logo from "../assets/Instagram_text_logo.png";
 import {
   UsergroupAddOutlined,
@@ -7,10 +7,22 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
+import { useMemo, useState } from "react";
+import useDebouncedSearch from "../hooks/useDebounceSearch";
+import useSearchData from "../hooks/useSearchData";
+import { UserItemType } from "../api/apiSlice";
+import MiniProfile from "./MiniProfile";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const AppHeader = () => {
+  const [searchText, setSearchText] = useState<string>("");
+  const { debouncedSearchText, isLoadingSearch } = useDebouncedSearch(
+    searchText,
+    500
+  );
+  const searchedData = useSearchData(debouncedSearchText) as UserItemType[];
+
   const items = [
     {
       label: (
@@ -52,12 +64,21 @@ const AppHeader = () => {
           />
         </Flex>
       ),
-      key: "following",
+      key: "favorites",
     },
   ];
 
+  const searchOptions = useMemo(() => {
+    return searchedData?.map((item: UserItemType) => {
+      return {
+        value: item._id,
+        label: item.name,
+      };
+    });
+  }, [searchedData]);
+
   const onChangeSearch = (value: string) => {
-    console.log("value", value);
+    setSearchText(value);
   };
 
   return (
@@ -80,9 +101,10 @@ const AppHeader = () => {
         gap={20}
         style={{ position: "sticky", right: 16, zIndex: 2 }}
       >
-        <SearchInput
+        <SearchSelection
           showSearch
           allowClear
+          searchValue={searchText}
           optionFilterProp="label"
           suffixIcon={null}
           placeholder={
@@ -104,22 +126,92 @@ const AppHeader = () => {
               </Text>
             </Flex>
           }
-          //   onChange={onChangeSearch}
           onSearch={onChangeSearch}
-          options={[
-            {
-              value: "jack",
-              label: "Jack",
-            },
-            {
-              value: "lucy",
-              label: "Lucy",
-            },
-            {
-              value: "tom",
-              label: "Tom",
-            },
-          ]}
+          options={searchOptions}
+          notFoundContent={
+            <>
+              {isLoadingSearch ? (
+                <Flex vertical>
+                  {Array.from(Array(5).keys()).map((index) => (
+                    <Flex
+                      gap="small"
+                      key={index}
+                      style={{ padding: "8px 0px" }}
+                    >
+                      <Skeleton.Avatar active size={44} />
+                      <Flex vertical gap="small" style={{ width: "100%" }}>
+                        <Skeleton.Input active style={{ width: "100%" }} />
+                        <Skeleton.Input active style={{ width: "80%" }} />
+                      </Flex>
+                    </Flex>
+                  ))}
+                </Flex>
+              ) : searchText && searchedData?.length === 0 ? (
+                <Flex style={{ width: "100%", height: "100%" }}>
+                  <Text
+                    style={{
+                      color: "var(--ig-secondary-text)",
+                      textAlign: "center",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    No results found.
+                  </Text>
+                </Flex>
+              ) : (
+                <Flex vertical style={{ width: "100%", height: "100%" }}>
+                  <Title level={5} style={{ color: "white", margin: 0 }}>
+                    Recent
+                  </Title>
+                  <Flex style={{ width: "100%", height: "100%" }}>
+                    <Text
+                      style={{
+                        color: "var(--ig-secondary-text)",
+                        textAlign: "center",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      No recent searches.
+                    </Text>
+                  </Flex>
+                </Flex>
+              )}
+            </>
+          }
+          optionRender={(option, info) => {
+            const getProfileData: UserItemType | undefined = searchedData.find(
+              (dataItem: UserItemType) => dataItem._id === option.value
+            );
+            if (getProfileData) {
+              return (
+                <MiniProfile
+                  key={getProfileData._id}
+                  imageUrl={getProfileData.imageUrl}
+                  imageSize={44}
+                  style={{ padding: "8px 0px" }}
+                  name={getProfileData.name}
+                  description={
+                    <Text
+                      style={{
+                        color: "var(--ig-secondary-text)",
+                        fontSize: "var(--system-12-font-size)",
+                        width: "97%",
+                      }}
+                      ellipsis
+                    >
+                      {(info.index + 1000).toLocaleString()} followers
+                    </Text>
+                  }
+                />
+              );
+            }
+          }}
         />
         <HeartOutlined
           style={{
@@ -141,13 +233,27 @@ const DropsownStyle = styled(Dropdown)`
   }
 `;
 
-const SearchInput = styled(Select)`
+const SearchSelection = styled(Select)`
   height: 36px;
   width: 268px;
+  color: white !important;
+  caret-color: white;
   .ant-select-selector {
     background-color: var(--ig-search-input) !important;
     border: none !important;
     border-radius: 8px !important;
     padding: 0 16px !important;
+  }
+  .ant-select-selector input {
+    color: white !important;
+  }
+  .ant-select-selector {
+    color: white !important;
+  }
+  .ant-select-dropdown {
+    background-color: black !important; /* Set dropdown background color to black */
+  }
+  .ant-select-item-option-selected {
+    background-color: black !important; /* Customize selected item's background */
   }
 `;

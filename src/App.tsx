@@ -161,10 +161,10 @@ function App() {
           <RowStyle
             wrap={false}
             style={{
-              width: isHideNavMenu
-                ? "calc(100% + 72px)"
-                : isAppSize
+              width: isAppSize
                 ? "100%"
+                : isHideNavMenu
+                ? "calc(100% + 72px)"
                 : "calc(100% + 300px)",
             }}
           >

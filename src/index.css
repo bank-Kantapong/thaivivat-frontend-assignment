@@ -76,3 +76,12 @@ a:hover {
   border-radius: 6px;
   height: 18px;
 }
+
+.ant-select-dropdown {
+  background-color: var(--ig-separator) !important;
+  padding: 8px 16px !important;
+}
+
+.ant-select-item:hover {
+  background-color: var(--ig-hover-overlay) !important; /* Optional: Change background color on hover */
+}
