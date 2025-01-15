@@ -11,7 +11,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: var(--ig-primary-background);
-  overflow: hidden auto;
+  /* overflow: hidden auto; */
 }
 
 #root {

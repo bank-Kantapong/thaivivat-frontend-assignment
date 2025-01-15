@@ -34,107 +34,118 @@ const Posts = () => {
       }}
     >
       <PostBox>
-        {chracters?.data?.slice(0, 3)?.map((item: UserItemType) => (
-          <Flex vertical key={item._id}>
-            <Flex vertical>
-              <div style={{ padding: isFitAppSize ? "12px 14px 0" : "0" }}>
-                <MiniProfile
+        {chracters?.data
+          ?.slice(0, 3)
+          ?.map((item: UserItemType, index: number) => (
+            <Flex vertical key={item._id}>
+              <Flex vertical>
+                <div style={{ padding: isFitAppSize ? "12px 14px 0" : "0" }}>
+                  <MiniProfile
+                    style={{
+                      padding: "0 0 12px 4px",
+                    }}
+                    imageUrl={item.imageUrl}
+                    name={item.name}
+                    activeTime={isFitAppSize ? "" : "16m"}
+                    suffix={
+                      <EllipsisOutlined
+                        style={{
+                          fontSize: 24,
+                          color: "white",
+                          cursor: "pointer",
+                        }}
+                      />
+                    }
+                  />
+                </div>
+                <img
+                  src={item.imageUrl}
+                  alt="post"
+                  width={468}
                   style={{
-                    padding: "0 0 12px 4px",
+                    objectFit: "cover",
+                    width: "min(470px, 100vw)",
+                    borderRadius: "4px",
+                    border: "1px solid var(--ig-separator)",
                   }}
-                  imageUrl={item.imageUrl}
-                  name={item.name}
-                  activeTime={isFitAppSize ? "" : "16m"}
-                  suffix={
-                    <EllipsisOutlined
-                      style={{
-                        fontSize: 24,
-                        color: "white",
-                        cursor: "pointer",
-                      }}
-                    />
-                  }
                 />
-              </div>
-              <img
-                src={item.imageUrl}
-                alt="post"
-                width={468}
-                style={{ objectFit: "cover", width: "min(470px, 100vw)" }}
-              />
-              <Flex
-                vertical
-                style={{ padding: isFitAppSize ? "16px 16px 0" : "0" }}
-              >
                 <Flex
-                  align="center"
-                  justify="space-between"
-                  style={{ padding: isFitAppSize ? "0 0 12px" : "12px 0" }}
+                  vertical
+                  style={{ padding: isFitAppSize ? "16px 16px 0" : "0" }}
                 >
-                  <Flex gap="middle">
-                    <HeartOutlined
+                  <Flex
+                    align="center"
+                    justify="space-between"
+                    style={{ padding: isFitAppSize ? "0 0 12px" : "12px 0" }}
+                  >
+                    <Flex gap="middle">
+                      <HeartOutlined
+                        style={{
+                          fontSize: 24,
+                          color: "white",
+                          cursor: "pointer",
+                        }}
+                      />
+                      <MessageOutlined
+                        style={{
+                          fontSize: 24,
+                          color: "white",
+                          cursor: "pointer",
+                        }}
+                      />
+                      <SendOutlined
+                        style={{
+                          fontSize: 24,
+                          color: "white",
+                          cursor: "pointer",
+                          transform: "rotate(-25deg)",
+                          paddingBottom: "8px",
+                        }}
+                      />
+                    </Flex>
+                    <BookOutlined
                       style={{
                         fontSize: 24,
                         color: "white",
                         cursor: "pointer",
-                      }}
-                    />
-                    <MessageOutlined
-                      style={{
-                        fontSize: 24,
-                        color: "white",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <SendOutlined
-                      style={{
-                        fontSize: 24,
-                        color: "white",
-                        cursor: "pointer",
-                        transform: "rotate(-25deg)",
-                        paddingBottom: "8px"
                       }}
                     />
                   </Flex>
-                  <BookOutlined
-                    style={{ fontSize: 24, color: "white", cursor: "pointer" }}
-                  />
-                </Flex>
-                <Text style={{ color: "white" }} strong>
-                  10 likes
-                </Text>
-                <Flex gap="small">
                   <Text style={{ color: "white" }} strong>
-                    {item.name}
+                    10 likes
                   </Text>
-                  <Text style={{ color: "white" }}>Hello</Text>
-                </Flex>
-                <Flex align="center">
-                  <CommentInput
-                    placeholder="Add a comment..."
-                    autoSize={{ minRows: 1, maxRows: 4 }}
-                    variant="borderless"
-                    onChange={(e) => setCommentValue(e.target.value)}
-                  />
-                  {commentValue && (
-                    <Text
-                      style={{
-                        color: "var(--ig-primary-button)",
-                        textWrap: "nowrap",
-                      }}
-                      strong
-                    >
-                      Post
+                  <Flex gap="small">
+                    <Text style={{ color: "white" }} strong>
+                      {item.name}
                     </Text>
-                  )}
+                    <Text style={{ color: "white" }}>Hello</Text>
+                  </Flex>
+                  <Flex align="center">
+                    <CommentInput
+                      placeholder="Add a comment..."
+                      autoSize={{ minRows: 1, maxRows: 4 }}
+                      variant="borderless"
+                      onChange={(e) => setCommentValue(e.target.value)}
+                    />
+                    {commentValue && (
+                      <Text
+                        style={{
+                          color: "var(--ig-primary-button)",
+                          textWrap: "nowrap",
+                        }}
+                        strong
+                      >
+                        Post
+                      </Text>
+                    )}
+                  </Flex>
                 </Flex>
               </Flex>
+              <Divider
+                style={{ marginBottom: index + 1 === 3 ? 100 : 20, borderColor: "var(--ig-separator)" }}
+              />
             </Flex>
-            <Divider
-              style={{ marginBottom: 20, borderColor: "var(--ig-separator)" }}
-            />
-          </Flex>
-        ))}
+          ))}
       </PostBox>
     </Flex>
   );

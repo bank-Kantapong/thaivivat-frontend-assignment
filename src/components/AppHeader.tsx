@@ -75,7 +75,11 @@ const AppHeader = () => {
           style={{ filter: "invert(1)" }}
         />
       </DropsownStyle>
-      <Flex align="center" gap={20} style={{ position: "sticky", right: 16, zIndex: 2}}>
+      <Flex
+        align="center"
+        gap={20}
+        style={{ position: "sticky", right: 16, zIndex: 2 }}
+      >
         <SearchInput
           showSearch
           allowClear

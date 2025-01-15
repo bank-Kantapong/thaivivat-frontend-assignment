@@ -116,6 +116,7 @@ function App() {
       <Layout
         style={{
           height: "100%",
+          overflow: "hidden auto",
         }}
       >
         {isAppSize && (
@@ -129,7 +130,7 @@ function App() {
               span={isHideRightContent ? 24 : 16}
               style={{ maxWidth: 630, width: "100%" }}
             >
-              <Flex vertical style={{ height: "100%" }}>
+              <Flex vertical style={{ height: "100%", paddingBottom: "100px" }}>
                 <Stories />
                 <Posts />
               </Flex>
